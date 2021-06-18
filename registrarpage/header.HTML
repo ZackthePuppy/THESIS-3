@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="../css/topnavigation.css">
+<link rel="stylesheet" type="text/css" href="../css/fixedheader.css">
+<link rel="stylesheet" type="text/css" href="../css/sidenavigation.css">
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+<link rel="stylesheet" type="text/css" href="../css/tab.css">
+</head>
+
+<body>
+
+<div class="topnav" id="myHeader">
+  <a href="../logoutaction.php">Logout</a>
+  <h2 style="float: right;">Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b></h2>
+<img src="../pic/logo.png" alt="CvSU" style='height: 50px; width: 50px; object-fit: contain; float: right'>
+<span style="font-size:30px;cursor:pointer;margin-left:20px" onclick="openNav()">&#9776; </span>
+</div>
+
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="registrar.php">Events</a>
+  <a href="editfreshmen.php">Freshmen Admissions</a>
+  <a href="verifyfreshmen.php">Verify Freshmen</a>
+</div>
+
+</body>
+
+<script src="../js/sidenavigation.js"></script>
+<script src="../js/fixedheader.js"></script>
+<script src="../js/tab.js"></script>
+
+</html>

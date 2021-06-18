@@ -1,0 +1,34 @@
+@font-face {
+  font-family: "Custom1";
+  src: url(font1.ttf);
+}
+a { font-family: "Custom1", sans-serif }
+
+body {
+  margin: 0;
+  font-family: Custom1;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #349c3c;
+  width: 100%;
+}
+.topnav a {
+  float: right;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #4CAF50;
+  color: white;
+}

@@ -1,0 +1,13 @@
+@font-face {
+  font-family: "Custom1";
+  src: url(font1.ttf);
+}
+
+.content {
+	padding: 30px;
+}
+
+h2 {
+	font-family: Custom1;
+	font-size: 17px;
+}

@@ -1,0 +1,5 @@
+git init
+git add .
+git commit -m "Welcome to Mobile Legends!"
+git remote add origin "copy the link here without quotes"
+git push origin master
