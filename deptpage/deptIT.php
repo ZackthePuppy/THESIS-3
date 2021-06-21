@@ -1,5 +1,5 @@
 <?php include 'logincheck.php';?>
-<?php include 'crudexamfreshmen/server.php'; ?>
+<?php include 'deptcrud/server.php'; ?>
 
 <?php 
     if (isset($_GET['edit'])) {
@@ -61,10 +61,10 @@
             <td><?php echo $row['firstname']; ?></td>
             <td><?php echo $row['email']; ?></td>
             <td><?php if (($row['exam']) == '0000-00-00' or (empty($row['exam']))) { 
-                                		echo "To be assessed";
-                                	}
-				else
-				echo $row['exam']; ?></td>
+                                        echo "To be assessed";
+                                    }
+                else
+                echo $row['exam']; ?></td>
             <td><?php echo $row['result']; ?></td>
             <td>
                 <a href="examfreshmen.php?edit=<?php echo $row['id']; ?>" class="edit_btn" >Edit</a>
@@ -73,15 +73,15 @@
     <?php } ?>
 </table>
 
-    <form method="post" action="crudexamfreshmen/server.php" >
+    <form method="post" action="deptcrud/server.php" >
             <input type="hidden" name="id" value="<?php echo $id; ?>">
         <div class="input-group">
             <label>Exam result for <?php echo $lastname; ?></label>
             <select id = "result" name="result" value="<?php echo $result; ?>">
                <option value="01"></option>
-			   <option value="Passed">Passed</option>
-			   <option value="Failed">Failed</option>
-			</select>
+               <option value="Passed">Passed</option>
+               <option value="Failed">Failed</option>
+            </select>
         </div>
         <div class="input-group">
 

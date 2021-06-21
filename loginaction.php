@@ -71,7 +71,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $password_err = "The password you entered was not valid.";
                         }
                     }
-                } else{
+                } else if (mysqli_stmt_num_rows($stmt) == 0){
                     // Display an error message if username doesn't exist
 
 
@@ -138,16 +138,84 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $password_err = "The password you entered was not valid.";
                         }
                     }
+                } else if (mysqli_stmt_num_rows($stmt) == 0){
+
+                    
+                    // Display an error message if username doesn't exist
+
+    if(empty($username_err) && empty($password_err)){
+        // Prepare a select statement
+        $sql = "SELECT id, username, password FROM admindept WHERE username = ?";
+        
+        if($stmt = mysqli_prepare($link, $sql)){
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt, "s", $param_username);
+            
+            // Set parameters
+            $param_username = $username;
+            
+            // Attempt to execute the prepared statement
+            if(mysqli_stmt_execute($stmt)){
+                // Store result
+                mysqli_stmt_store_result($stmt);
+                
+                // Check if username exists, if yes then verify password
+                if(mysqli_stmt_num_rows($stmt) == 1){                    
+                    // Bind result variables
+                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);
+                    if(mysqli_stmt_fetch($stmt)){
+                        if(password_verify($password, $hashed_password) and $username == "adminIT"){
+                            // Password is correct, so start a new session
+                            session_start();
+                            
+                            // Store data in session variables
+                            $_SESSION["loggedin"] = true;
+                            $_SESSION["id"] = $id;
+                            $_SESSION["username"] = $username;                            
+                            
+                            // Redirect user to welcome page
+                            header("location: deptpage/deptIT.php");
+                        } elseif(password_verify($password, $hashed_password) and $username == "adminEDUC"){
+                            // Password is correct, so start a new session
+                            session_start();
+                            
+                            // Store data in session variables
+                            $_SESSION["loggedin"] = true;
+                            $_SESSION["id"] = $id;
+                            $_SESSION["username"] = $username;                            
+                            
+                            // Redirect user to welcome page
+                            header("location: deptpage/deptEDUC.php");
+                        } 
+                        else{
+                            // Display an error message if password is not valid
+                            $password_err = "The password you entered was not valid.";
+                        }
+                    }
                 } else{
 
                     
                     // Display an error message if username doesn't exist
-                    $username_err = "No account found with that username.";
+                    $username_err = "No username found";
                 }
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
             }
+        error_reporting(0);
+            // Close statement
+            mysqli_stmt_close($stmt);
+        }
+    }
 
+
+
+
+
+                }
+            } else{
+                echo "Oops! Something went wrong. Please try again later.";
+            }
+        error_reporting(0);
             // Close statement
             mysqli_stmt_close($stmt);
         }

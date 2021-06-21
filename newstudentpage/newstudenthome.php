@@ -69,25 +69,24 @@ $sec = "10";
                                             echo "<h2> Exam Result: Exam not yet taken </h2>";
                                         }
                                         else if (($row['result']) == 'Passed'){
-                                            echo "<h2> Exam Result: Congratulations! You passed. </h2>"; ?>
+                                            echo "<h2> Exam Result: Congratulations! You passed. </h2>"; 
+                                            echo "<h2>Next step, do the following: </h2>
+                                        <h2>1. Get the Notice of Admission (NOA) from the guidance. <br>
+                                            2. Get the medical referral slip at the campus clinic. <br>
+                                            3. Take an interview at the Department of your chosen course, and have the NOA signed from them. <br>
+                                            4. Proceed to the date of medical examination </h2>";
 
-                                            <div class="container">
-                                                  <div class="row">
-                                                    <form action="newstudenthome.php" method="post" enctype="multipart/form-data" >
-                                                      <h3>Upload the Requirements</h3>
-                                                      <input type="file" name="myfile"> <br>
-                                                      <button type="submit" name="save">upload</button>
-                                                    </form>
-                                                  </div>
-                                                </div>
-
-
-
-                                            <?php
-
-                                        if (($row['verified']) == '' or (empty($row['verified']))){
-                                            echo "<h2> Waiting for verification of your requirements.</h2>"; 
-
+                                        if ((($row['examclinic']) == '' or (empty($row['examclinic']))) and (($row['verifieddept']) == '' or (empty($row['verifieddept']))) ){
+                                            echo "<h2>Clinic: Assessing</h2>
+                                                  <h2>Department: Assessing</h2>";  
+                                        }
+                                        else if ((($row['examclinic']) != '' or (!empty($row['examclinic']))) and (($row['verifieddept']) == '' or (empty($row['verifieddept']))) ){
+                                            echo "<h2>Clinic: Your medical examination date is on " . $row['examclinic'] . "</h2>";
+                                            echo "<h2>Department: Assessing</h2>";  
+                                        }
+                                        else if ((($row['examclinic']) == '' or (empty($row['examclinic']))) and (($row['verifieddept']) != '' or (!empty($row['verifieddept']))) ){
+                                            echo "<h2>Clinic: Assessing</h2>";
+                                            echo "<h2>Department: </h2>" . $row['verifieddept'];;  
                                         }
                                         else{
                                             echo "<h2> Your requirements are verified. You can now enroll and enter your credentials in main login by clicking below.</h2>"; ?>
