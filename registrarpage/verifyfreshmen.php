@@ -1,16 +1,19 @@
 <?php include 'logincheck.php';?>
 <?php include 'crudverifyfreshmen/server.php'; ?>
 <?php include 'uploadlogic.php';?>
-
+<?php
+$page = $_SERVER['PHP_SELF'];
+$sec = "10";
+?>
 <?php 
     if (isset($_GET['edit'])) {
         $id = $_GET['edit'];
         $update = true;
         $record = mysqli_query($db, "SELECT * FROM newstudent WHERE id=$id");
 
-        if (count($record) == 1 ) {
+        if ((is_object($record) && count(get_object_vars($record)) > 0) || count($record) == 1  ) {
             $n = mysqli_fetch_array($record);
-            $verified = $n['verified'];
+            $verified = $n['verifiedregistrar'];
             $lastname = $n['lastname'];
         }
     }
@@ -22,6 +25,7 @@
     <title>HOME</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 <link rel="icon" type="image/gif" href="pic/logo.png" sizes="16x16">
+<meta http-equiv="refresh" content="<?php echo $sec?>;URL='<?php echo $page?>'">
 </head>
 <body>
 
@@ -51,8 +55,7 @@
             <th>Lastname&nbsp;</th>
             <th>Firstname&nbsp;</th>
             <th>Email&nbsp;</th>
-            <th>Exam Result&nbsp;</th>
-            <th>Verify&nbsp;</th>
+            <th>Verification&nbsp;</th>
             <th>Files&nbsp;</th>
             <th colspan="2">&nbsp;</th>
         </tr>
@@ -63,14 +66,13 @@
             <td><?php echo $row['lastname']; ?></td>
             <td><?php echo $row['firstname']; ?></td>
             <td><?php echo $row['email']; ?></td>
-            <td><?php echo $row['result']; ?></td>
-            <td><?php if (($row['verified']) == '' or (empty($row['verified']))) { 
+            <td><?php if (($row['verifiedregistrar']) == '' or (empty($row['verifiedregistrar']))) { 
                                         echo "Not yet";
                                     }
                 else
-                echo $row['verified']; ?></td>
-            <td><?php echo $row['filename']; ?></td>
-            <td><a href="verifyfreshmen.php?file_id=<?php echo $row['id'] ?>">Download</a></td>
+                echo $row['verifiedregistrar']; ?></td>
+            <td><?php echo $row['filename2']; ?></td>
+            <td><a href="verifyfreshmen.php?file_id2=<?php echo $row['id'] ?>">Download</a></td>
             <td>
                 <a href="verifyfreshmen.php?edit=<?php echo $row['id']; ?>" class="edit_btn" >Edit</a>
             </td>
@@ -82,7 +84,7 @@
             <input type="hidden" name="id" value="<?php echo $id; ?>">
         <div class="input-group">
             <label>Verify freshmen: <?php echo $lastname; ?></label>
-            <select id = "verified" name="verified" value="<?php echo $verified; ?>">
+            <select id = "verifiedregistrar" name="verifiedregistrar" value="<?php echo $verified; ?>">
                <option value="01"></option>
                <option value="Verified">Verified</option>
                <option value="To be followed">To be followed</option>

@@ -17,9 +17,9 @@
 
 	if (isset($_POST['update'])) {
 	$id = $_POST['id'];
-	$verified = $_POST['verified']; 
+	$verified = $_POST['verifiedregistrar']; 
 
-	mysqli_query($db, "UPDATE newstudent SET verified='$verified' WHERE id=$id");
+	mysqli_query($db, "UPDATE newstudent SET verifiedregistrar='$verified' WHERE id=$id");
 	$_SESSION['message'] = "Content updated!"; 
 	header('location: ../verifyfreshmen.php');
 	}

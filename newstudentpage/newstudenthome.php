@@ -110,7 +110,7 @@ $sec = "10";
 
                                 }
 
-                                    else if ((($row['exam']) != '0000-00-00' or (!empty($row['exam']))) and ((!empty($row['verifiedclinic']))) ){
+                                    else if ((($row['exam']) != '0000-00-00' or (!empty($row['exam']))) and ((!empty($row['verifiedclinic']))) and ((empty($row['verifiedregistrar']))) ){
                                             echo "<h2>Clinic: " . $row['verifieddept'] . "</h2>"; 
                                             echo "<h2>Department: " . $row['verifieddept'] . "</h2>"; 
                                             echo "<h2> Next Step: </h2>
@@ -129,6 +129,13 @@ $sec = "10";
                                                   </div>
                                                 <?php
                                             echo "<h2> Status: Waiting for registrar to approve. </h2>";
+                                    }
+
+                                    else if (((!empty($row['verifiedregistrar']))) ){
+                                        echo "<h2> You are now approved! You can now login to the main login and get your pre-registration there. <br>You can now login to the main login form by clicking  ";
+                                     ?>               
+                                    <a href="crudexamfreshmen/server.php?try=<?php echo $row['id']; ?>" class="del_btn">here.</a> <?php 
+
                                     }
 
                             }
