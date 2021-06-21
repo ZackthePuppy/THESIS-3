@@ -1,6 +1,9 @@
 <?php include 'logincheck.php';?>
-<?php include 'deptcrud/server.php'; ?>
-
+<?php include 'crudclinic/server.php'; ?>
+<?php
+$page = $_SERVER['PHP_SELF'];
+$sec = "10";
+?>
 <?php 
     if (isset($_GET['edit'])) {
         $id = $_GET['edit'];
@@ -21,13 +24,14 @@
     <title>HOME</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 <link rel="icon" type="image/gif" href="pic/logo.png" sizes="16x16">
+<meta http-equiv="refresh" content="<?php echo $sec?>;URL='<?php echo $page?>'">
 </head>
 <body>
 
     <?php include 'header.HTML';?>
 
 <div class="content">
-    <h3 style="text-align: center;">NOA Approval for Students</h3>
+    <h3 style="text-align: center;">Medical Approval for Students</h3>
 
     
 <?php if (isset($_SESSION['message'])): ?>
@@ -49,7 +53,6 @@
             <th>Lastname</th>
             <th>Firstname</th>
             <th>Email</th>
-            <th>Preferred Course</th>
             <th>Approval</th>
             <th colspan="2"></th>
         </tr>
@@ -60,25 +63,24 @@
             <td><?php echo $row['lastname']; ?></td>
             <td><?php echo $row['firstname']; ?></td>
             <td><?php echo $row['email']; ?></td>
-            <td><?php echo $row['prefcourse']; ?></td>
 
-            <td><?php if ((empty($row['verifieddept']))) { 
+            <td><?php if ((empty($row['verifiedclinic']))) { 
                                         echo "not yet";
                                     }
                 else
-                echo $row['verifieddept']; ?></td>
+                echo $row['verifiedclinic']; ?></td>
             <td>
-                <a href="deptIT.php?edit=<?php echo $row['id']; ?>" class="edit_btn" >Edit</a>
+                <a href="examclinic.php?edit=<?php echo $row['id']; ?>" class="edit_btn" >Edit</a>
             </td>
         </tr>
     <?php } ?>
 </table>
 
-    <form method="post" action="deptcrud/server.php" >
+    <form method="post" action="crudclinic/server.php" >
             <input type="hidden" name="id" value="<?php echo $id; ?>">
         <div class="input-group">
             <label>Exam result for <?php echo $lastname; ?></label>
-            <select id = "verifieddept" name="verifieddept" value="<?php echo $result; ?>">
+            <select id = "verifiedclinic" name="verifiedclinic" value="<?php echo $result; ?>">
                <option value="01"></option>
                <option value="Approved">Approved</option>
                <option value="Not Approved">Not Approved</option>
@@ -88,10 +90,11 @@
 
 
             <?php if ($update == true): ?>
-    <button class="btn" type="submit" name="update" style="background: #556B2F;" >Confirm</button>
+    <button class="btn" type="submit" name="update2" style="background: #556B2F;" >Confirm</button>
 <?php else: ?>
 <?php endif ?>
     </form>
+    <a class = "btn" href = "clinichome.php" style="text-decoration: none;">Back</a>
         </div>
 
 </div>

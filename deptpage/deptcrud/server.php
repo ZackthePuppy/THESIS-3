@@ -2,28 +2,26 @@
 	$db = mysqli_connect('localhost', 'root', '', 'enrollsemi');
 
 	// initialize variables
-	$month = "";
-	$day = "";
-	$examclinic = "";
+	$verifieddept = "";
 	$lastname = "";
 	$id = 0;
 	$update = false;
 
 	if (isset($_POST['save'])) {
-		$examclinic = $_POST['examclinic'];
+		$result = $_POST['result'];
 
-		mysqli_query($db, "INSERT INTO events (examclinic) VALUES ('$examclinic'"); 
+		mysqli_query($db, "INSERT INTO events (result) VALUES ('$result'"); 
 		$_SESSION['message'] = "Content Added"; 
-		header('location: ../clinichome.php');
+		header('location: ../editfreshmen.php');
 	}
 
 	if (isset($_POST['update'])) {
 	$id = $_POST['id'];
-	$examclinic = (("2021") . "-" . $_POST['month'] . "-" . $_POST['day']);   
+	$verifieddept = $_POST['verifieddept']; 
 
-	mysqli_query($db, "UPDATE newstudent SET examclinic='$examclinic' WHERE id=$id");
+	mysqli_query($db, "UPDATE newstudent SET verifieddept='$verifieddept' WHERE id=$id");
 	$_SESSION['message'] = "Content updated!"; 
-	header('location: ../clinichome.php');
+	header('location: ../deptIT.php');
 	}
 
 

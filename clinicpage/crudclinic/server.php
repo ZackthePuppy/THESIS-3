@@ -26,5 +26,13 @@
 	header('location: ../clinichome.php');
 	}
 
+	if (isset($_POST['update2'])) {
+	$id = $_POST['id'];
+	$verifiedclinic = $_POST['verifiedclinic']; 
+
+	mysqli_query($db, "UPDATE newstudent SET verifiedclinic='$verifiedclinic' WHERE id=$id");
+	$_SESSION['message'] = "Content updated!"; 
+	header('location: ../examclinic.php');
+	}
 
 	?>

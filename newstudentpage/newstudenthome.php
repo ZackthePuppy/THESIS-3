@@ -63,7 +63,7 @@ $sec = "10";
 
                                             <?php
                                 	}
-                                	else {
+                                	else if ((($row['exam']) != '0000-00-00' or (!empty($row['exam']))) and ((empty($row['verifiedclinic']))) ) {
                                 		echo "<h2> GREAT! Your entrance exam are scheduled on " . $row['exam'] . "</h2>";
                                         if (empty($row['result'])){
                                             echo "<h2> Exam Result: Exam not yet taken </h2>";
@@ -76,7 +76,7 @@ $sec = "10";
                                             3. Take an interview at the Department of your chosen course, and have the NOA signed from them. <br>
                                             4. Proceed to the date of medical examination </h2>";
 
-                                        if ((($row['examclinic']) == '' or (empty($row['examclinic']))) and (($row['verifieddept']) == '' or (empty($row['verifieddept']))) ){
+                                        if ((($row['examclinic']) == '' or (empty($row['examclinic'])) or ($row['examclinic']) == '0000-00-00') and (($row['verifieddept']) == '' or (empty($row['verifieddept']))) ){
                                             echo "<h2>Clinic: Assessing</h2>
                                                   <h2>Department: Assessing</h2>";  
                                         }
@@ -84,14 +84,18 @@ $sec = "10";
                                             echo "<h2>Clinic: Your medical examination date is on " . $row['examclinic'] . "</h2>";
                                             echo "<h2>Department: Assessing</h2>";  
                                         }
-                                        else if ((($row['examclinic']) == '' or (empty($row['examclinic']))) and (($row['verifieddept']) != '' or (!empty($row['verifieddept']))) ){
+                                        else if ((($row['examclinic']) == '' or (empty($row['examclinic'])) or ($row['examclinic']) == '0000-00-00') and (($row['verifieddept']) != '' or (!empty($row['verifieddept']))) ){
                                             echo "<h2>Clinic: Assessing</h2>";
-                                            echo "<h2>Department: </h2>" . $row['verifieddept'];;  
+                                            echo "<h2>Department: " . $row['verifieddept'] . "</h2>";  
+                                        }
+                                        else if ((($row['examclinic']) != '' or (!empty($row['examclinic']))) and (($row['verifieddept']) != '' or (!empty($row['verifieddept']))) and (($row['verifiedclinic']) == '' or (empty($row['verifiedclinic']))) ){
+                                            echo "<h2>Clinic: Your medical examination date is on " . $row['examclinic'] . "</h2>";
+                                            echo "<h2>Department: " . $row['verifieddept'] . "</h2>"; 
+                                            echo "<h2>Clinic: Not Yet approved </h2>";
                                         }
                                         else{
-                                            echo "<h2> Your requirements are verified. You can now enroll and enter your credentials in main login by clicking below.</h2>"; ?>
-                                    <a href="crudexamfreshmen/server.php?try=<?php echo $row['id']; ?>" class="del_btn">Logout</a>
-                                    <?php
+                                            echo "Nothing to say";
+
                                         }
                                     }
                                         else{
@@ -104,7 +108,30 @@ $sec = "10";
                                             <?php
                                         }
 
-                                }}
+                                }
+
+                                    else if ((($row['exam']) != '0000-00-00' or (!empty($row['exam']))) and ((!empty($row['verifiedclinic']))) ){
+                                            echo "<h2>Clinic: " . $row['verifieddept'] . "</h2>"; 
+                                            echo "<h2>Department: " . $row['verifieddept'] . "</h2>"; 
+                                            echo "<h2> Next Step: </h2>
+                                                 <h2>1. Make a softcopy of your NOA and medical result.<br></h2>
+                                            <h2> 2. Get a copy of <a href='https://cvsu-imus.edu.ph/assets/files/CvSU%20-%20STUDENT%20PROFILE%20FORM%20FOR%20INVENTORY.pdf'>student profile form here</a> and fill it up.</h2>
+                                            <h2> 3. Make a zip of your files and submit it below.";
+                                        
+                                                ?>
+                                                  <div class="row" style="margin-top: -5%;" >
+                                                    <form action="newstudenthome.php" method="post" enctype="multipart/form-data" >
+                                                      <h3>Submit all your requirements here</h3>
+                                                      <h3></h3>
+                                                      <input type="file" name="myfile2"> <br>
+                                                      <button type="submit" name="save2">upload</button>
+                                                    </form>
+                                                  </div>
+                                                <?php
+                                            echo "<h2> Status: Waiting for registrar to approve. </h2>";
+                                    }
+
+                            }
 
 
 
