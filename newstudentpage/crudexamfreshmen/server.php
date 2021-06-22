@@ -43,7 +43,7 @@
 	if (isset($_GET['try'])) {
 		$id = $_GET['try'];
 		mysqli_query($db, "INSERT INTO regular (id, username, password, firstname, lastname, email)
-			SELECT concat('20210', id) as id, username, password, firstname, lastname, email
+			SELECT concat('2021', id) as id, username, password, firstname, lastname, email
 			FROM newstudent WHERE id = $id");
 		mysqli_query($db, "DELETE FROM newstudent WHERE id=$id");
 		session_start();

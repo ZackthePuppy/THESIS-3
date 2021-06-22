@@ -132,6 +132,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             
                             // Redirect user to welcome page
                             header("location: clinicpage/clinichome.php");
+                        } elseif(password_verify($password, $hashed_password) and $username == "adminmis"){
+                            // Password is correct, so start a new session
+                            session_start();
+                            
+                            // Store data in session variables
+                            $_SESSION["loggedin"] = true;
+                            $_SESSION["id"] = $id;
+                            $_SESSION["username"] = $username;                            
+                            
+                            // Redirect user to welcome page
+                            header("location: mispage/mishome.php");
                         }
                         else{
                             // Display an error message if password is not valid
