@@ -35,8 +35,6 @@ $sec = "10";
                                     echo "<h2> Strand: " . $row['strand'] . "</h2>"; 
                                     echo "<h2> Preferred Course: " . $row['prefcourse'] . "</h2>"; ?>
 
-                                    <h2>Save this QR code in case you forgot your credentials.</h2>
-                                <img src="../pic/qr.png" width="100" height="100">
 
 
                                     <?php

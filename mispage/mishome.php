@@ -9,7 +9,7 @@
 <head>
     <title>HOME</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
-<link rel="icon" type="image/gif" href="pic/logo.png" sizes="16x16">
+<link rel="icon" class="no-print" type="image/gif" href="pic/logo.png" sizes="16x16">
 </head>
 <body>
 
@@ -22,7 +22,7 @@
 <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
     </head>
     <body>
-        <div class="container" style="margin-top: 1%;">
+        <div class="container no-print" style="margin-top: 1%;">
         <form style="width: 40%; height: 50% !important" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="row"
 >                <div class="col-md-6" style="text-align: center;">
@@ -56,34 +56,47 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <?php $results = mysqli_query($db, "SELECT * FROM prereg where studentno = $text"); ?>
 
 <table>
-    <thead>
-        <tr>
-            <th>Lastname&nbsp;</th>
-            <th>Firstname&nbsp;</th>
-            <th>Email&nbsp;</th>
-            <th>Verification&nbsp;</th>
-            <th>Files&nbsp;</th>
-            <th colspan="2">&nbsp;</th>
-        </tr>
-    </thead>
     
     <?php while ($row = mysqli_fetch_array($results)) { ?>
         <tr>
-            <td><?php echo $row['lastname']; ?></td>
-            <td><?php echo $row['firstname']; ?></td>
-            <td><?php echo $row['email']; ?></td>
-            <td><?php if (($row['verifiedregistrar']) == '' or (empty($row['verifiedregistrar']))) { 
-                                        echo "Not yet";
-                                    }
-                else
-                echo $row['verifiedregistrar']; ?></td>
-            <td><?php echo $row['filename2']; ?></td>
-            <td><a href="verifyfreshmen.php?file_id2=<?php echo $row['id'] ?>">Download</a></td>
-            <td>
-                <a href="verifyfreshmen.php?edit=<?php echo $row['id']; ?>" class="edit_btn" >Edit</a>
-            </td>
+            <td><h2>Name: <?php echo $row['lastname'] . ", " . $row['firstname']; ?></h2></td>
+            <td><h2>Section: <?php echo $row['section']; ?></h2></td>
+            <td><h2>Student No: <?php echo $row['studentno']; ?></h2></td>
         </tr>
     <?php } ?>
+
+<?php  $section = "SELECT (section) from prereg where studentno = $text"; 
+    $results = mysqli_query($db, "SELECT * FROM subject where section = 'BSIT1A'"); ?>
+<table>
+    
+        <tr>
+            <th>Subject Code&nbsp;</th>
+            <th>Subject Title&nbsp;</th>
+            <th>Unit&nbsp;</th>
+            <th>Day&nbsp;</th>
+            <th>Time&nbsp;</th>
+            <th>Day (Lab)&nbsp;</th>
+            <th>Time (Lab)&nbsp;</th>
+        </tr>
+    <?php while ($row = mysqli_fetch_array($results)) { ?>
+
+        <tr>
+            <td><?php echo $row['subjcode']; ?></td>
+            <td><?php echo $row['subjtitle']; ?></td>
+            <td><?php echo $row['units']; ?></td>
+            <td><?php echo $row['day']; ?></td>
+            <td><?php echo $row['time'] . $row['timeend']; ?></td>
+            <td><?php echo $row['daylab']; ?></td>
+            <td><?php if ( (($row['timelab']) == '00:00:00' or (empty($row['timelab']))) and (($row['timelabend']) == '00:00:00' or (empty($row['timelabend']))) ){ 
+                                        echo "N/A";
+                                    }
+                else
+                echo $row['timelab'] . "-" . $row['timelabend']; ?></td>
+        </tr>
+
+    <?php } ?>
+</table>
+
 </table>                
 
 
@@ -92,8 +105,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             }
         }
 ?>
-
-
+<div class="container" style="">
+<button class="no-print" style="float: center;" onClick="window.print()">Print this page</button>
+</div>
         <script>
            let scanner = new Instascan.Scanner({ video: document.getElementById('preview')});
            Instascan.Camera.getCameras().then(function(cameras){

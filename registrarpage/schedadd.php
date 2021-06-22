@@ -26,6 +26,7 @@
         });
     </script>
 </head>
+
 <body>
     <div class="" style="margin: 50px;">
         <div class="container-fluid">
@@ -34,6 +35,7 @@
                     <div class="mt-5 mb-3 clearfix">
                         <h2 class="pull-left">Subject Details</h2>
                         <a href="crudschedadd/create.php" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add Subject</a>
+                        <a href="editfreshmen.php" class="btn btn-success pull-right">Back</a>
                     </div>
                     <?php
                     // Include config file

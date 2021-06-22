@@ -11,3 +11,11 @@ h2 {
 	font-family: Custom1;
 	font-size: 17px;
 }
+
+@media print
+{    
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+}
