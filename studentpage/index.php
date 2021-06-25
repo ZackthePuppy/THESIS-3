@@ -21,13 +21,31 @@ if(isset($_POST['submit']) ) {
 
 		$id = trim($_SESSION["id"]);
 		$section =  trim($_POST["section"]);
+		$year = trim($_SESSION["year"]);
+		$sem = trim($_SESSION["sem"]);;
+		$lastname = $_SESSION["lastname"];
+		$firstname = $_SESSION["firstname"];
 
+		$con = new mysqli('localhost', 'root', '', 'enrollsemi');
+		$stmt = $con->prepare("INSERT INTO prereg (section, subjcode, subjtitle, sem, year, units, day, time, timeend, daylab, timelab, timelabend)
+			SELECT section, subjcode, subjtitle, sem, year, units, day, time, timeend, daylab, timelab, timelabend
+			FROM subject WHERE year = ? and sem = ?;");
+		$stmt->bind_param("ss", $year , $sem);
+		$stmt->execute();
+
+		$stmt2 = $con->prepare("UPDATE prereg set studentno = ?, lastname = ?, firstname = ? where year = ? and sem = ?;");
+		$stmt2->bind_param("sssss", $id, $lastname, $firstname,  $year , $sem);
+		$stmt2->execute();
+
+
+/*
 		$con = new mysqli('localhost', 'root', '', 'enrollsemi');
 		$stmt = $con->prepare("INSERT INTO prereg (studentno, lastname, firstname, section)
 			SELECT id, lastname, firstname, (SELECT section from subject GROUP BY ?) as section
 			FROM regular WHERE id = ?");
 		$stmt->bind_param("ss", $section , $id);
 		$stmt->execute();
+		*/
 }
 
 ?>

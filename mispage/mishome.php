@@ -53,7 +53,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 ?>
 
 
-<?php $results = mysqli_query($db, "SELECT * FROM prereg where studentno = $text"); ?>
+<?php $results = mysqli_query($db, "SELECT * FROM prereg where studentno = $text limit 1"); ?>
 
 <table>
     
@@ -66,7 +66,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <?php } ?>
 
 <?php  $section = "SELECT (section) from prereg where studentno = $text"; 
-    $results = mysqli_query($db, "SELECT * FROM subject where section = 'BSIT1A'"); ?>
+    $results = mysqli_query($db, "SELECT * FROM prereg where studentno = $text"); ?>
 <table>
     
         <tr>
