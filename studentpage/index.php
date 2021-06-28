@@ -29,13 +29,22 @@ if(isset($_POST['submit']) ) {
 		$con = new mysqli('localhost', 'root', '', 'enrollsemi');
 		$stmt = $con->prepare("INSERT INTO prereg (section, subjcode, subjtitle, sem, year, units, day, time, timeend, daylab, timelab, timelabend)
 			SELECT section, subjcode, subjtitle, sem, year, units, day, time, timeend, daylab, timelab, timelabend
-			FROM subject WHERE year = ? and sem = ?;");
-		$stmt->bind_param("ss", $year , $sem);
+			FROM subject WHERE year = ? and sem = ? and section = ?;");
+		$stmt->bind_param("sss", $year , $sem, $section);
 		$stmt->execute();
 
 		$stmt2 = $con->prepare("UPDATE prereg set studentno = ?, lastname = ?, firstname = ? where year = ? and sem = ?;");
 		$stmt2->bind_param("sssss", $id, $lastname, $firstname,  $year , $sem);
 		$stmt2->execute();
+
+		$stmt3 = $con->prepare("UPDATE regular set enrolled = 'Pending' where id = ?;");
+		$stmt3->bind_param("s", $id);
+		$stmt3->execute();
+
+		echo ("<script LANGUAGE='JavaScript'>
+                    window.alert('Please wait for MIS to approve your registration form.')
+                    </script>");
+
 
 
 /*
@@ -61,10 +70,37 @@ if(isset($_POST['submit']) ) {
 					<div class="form-group">
 
 
+
+            <div class="form-group">
+                <label>Supplier:</label>
+                <?php
+$mysqli = NEW mysqli ('localhost', 'root', '', 'enrollsemi');
+
+$resultSet = $mysqli ->query("SELECT letter from subject group by letter");
+?>
+
+<select name="section">
+    <?php
+    while($rows = $resultSet->fetch_assoc()){
+
+		$prefcourse = $_SESSION["prefcourse"];
+		$year = $_SESSION['year'];
+        $meow = $prefcourse . $year . $rows['letter'];
+        echo "<option value='$meow'>$meow</option>";
+    }
+    ?>
+</select>
+        <span class="help-block"></span>
+            </div>    
+
+
+<?php /*
             <select id = "section" name="section" value="<?php echo $section; ?>">
 			   <option value="BSIT1A">BSIT1A</option>
 			   <option value="BSIT1B">BSIT1B</option>
 			</select>
+*/ ?>
+			
 					</div>
 					<div class="form-group">
 						<input type="submit" name="submit" value="Submit and generate QR" class="btn btn-primary submitBtn" style="width:20em; margin:0;" />

@@ -35,7 +35,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Validate credentials
     if(empty($username_err) && empty($password_err)){
         // Prepare a select statement
-        $sql = "SELECT id, username, lastname, firstname, year, sem, password FROM regular WHERE username = ?";
+        $sql = "SELECT id, username, lastname, firstname, status, email, enrolled, year, sem, prefcourse, status, password FROM regular WHERE username = ?";
         
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
@@ -52,7 +52,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 // Check if username exists, if yes then verify password
                 if(mysqli_stmt_num_rows($stmt) == 1){                    
                     // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $id, $username, $lastname, $firstname, $year, $sem, $hashed_password);
+                    mysqli_stmt_bind_result($stmt, $id, $username, $lastname, $firstname, $status, $email, $enrolled, $year, $sem, $prefcourse, $status, $hashed_password);
                     if(mysqli_stmt_fetch($stmt)){
                         if(password_verify($password, $hashed_password)){
                             // Password is correct, so start a new session
@@ -65,7 +65,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["lastname"] = $lastname;   
                             $_SESSION["firstname"] = $firstname;
                             $_SESSION["sem"] = $sem;   
-                            $_SESSION["year"] = $year;                            
+                            $_SESSION["year"] = $year;  
+                            $_SESSION["prefcourse"] = $prefcourse;    
+                            $_SESSION["status"] = $status;                              
                             
                             // Redirect user to welcome page
                             header("location: studentpage/newstudenthome.php");
@@ -123,7 +125,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["username"] = $username;                            
                             
                             // Redirect user to welcome page
-                            header("location: newstudentpage/newstudenthome.php");
+                            header("location: superadminpage/superadmin.php");
                         } elseif(password_verify($password, $hashed_password) and $username == "adminclinic"){
                             // Password is correct, so start a new session
                             session_start();

@@ -1,4 +1,35 @@
 <?php include 'crudschedadd/config.php';
+
+
+    if (isset($_POST['yey'])) {
+         
+        // Redirect to login page
+
+        $con = new mysqli('localhost', 'root', '', 'enrollsemi');
+        $stmt2 = $con->prepare("UPDATE checksem set enrollcheck = 'Yes' where id = 1");
+        $stmt2->execute();
+
+        echo ("<script LANGUAGE='JavaScript'>
+                    window.alert('Enrollment (regular) for this incoming semester has been opened!')
+                    </script>");
+        header("Refresh:0");
+    }
+
+    else if (isset($_POST['yay'])) {
+         
+        // Redirect to login page
+
+        $con = new mysqli('localhost', 'root', '', 'enrollsemi');
+        $stmt2 = $con->prepare("UPDATE checksem set enrollcheck = '' where id = 1");
+        $stmt2->execute();
+
+        echo ("<script LANGUAGE='JavaScript'>
+                    window.alert('Enrollment has been closed!')
+                    </script>");
+        header("Refresh:0");
+    }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -27,15 +58,43 @@
     </script>
 </head>
 
-<body>
+<style type="text/css">
+    table {
+        border-radius: 10px;
+        border: 0px;
+        border-width: 10px;
+    }
+    table.dataTable thead .sorting:after,
+    table.dataTable thead .sorting:before,
+    table.dataTable thead .sorting_asc:after,
+    table.dataTable thead .sorting_asc:before,
+    table.dataTable thead .sorting_asc_disabled:after,
+    table.dataTable thead .sorting_asc_disabled:before,
+    table.dataTable thead .sorting_desc:after,
+    table.dataTable thead .sorting_desc:before,
+    table.dataTable thead .sorting_desc_disabled:after,
+    table.dataTable thead .sorting_desc_disabled:before {
+    bottom: .5em;
+    }
+</style>
+
+<body style="background-image: url('../css/bg/green.jpg');">
     <div class="" style="margin: 50px;">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
                     <div class="mt-5 mb-3 clearfix">
-                        <h2 class="pull-left">Subject Details</h2>
+                        <h2 class="pull-left">Subject Details&emsp;</h2>
                         <a href="crudschedadd/create.php" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add Subject</a>
                         <a href="editfreshmen.php" class="btn btn-success pull-right">Back</a>
+
+                                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" >
+                                        <div class="form-group">
+                                            <input type="submit" name="yey" value="Open enrollment for incoming sem" class="btn btn-primary submitBtn" style="width:20em; margin:0;" />
+                                        
+                                            <input type="submit" name="yay" value="Close enrollment" class="btn btn-primary submitBtn" style="width:20em; margin:0;" />
+                                        </div>
+                                    </form>
                     </div>
                     <?php
                     // Include config file
@@ -45,7 +104,8 @@
                     $sql = "SELECT * FROM subject";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
-                            echo '<table class="table table-bordered table-striped">';
+                            echo '<div style = "height: 500px; overflow: auto;">';
+                            echo '<table id="dtVerticalScrollExample" class="table table-striped table-dark">';
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>Schedule Code</th>";
@@ -54,10 +114,12 @@
                                         echo "<th>Subject Title</th>";
                                         echo "<th>Semester</th>";
                                         echo "<th># of units</th>";
+                                        echo "<th>Prerequisite</th>";
                                         echo "<th>Day</th>";
                                         echo "<th>Time</th>";
                                         echo "<th>Day of lab</th>";
                                         echo "<th>Time of lab</th>";
+                                        
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
@@ -69,6 +131,7 @@
                                         echo "<td>" . $row['subjtitle'] . "</td>";
                                         echo "<td>" . $row['sem'] . "</td>";
                                         echo "<td>" . $row['units'] . "</td>";
+                                        echo "<td>" . $row['prereq'] . "</td>";
                                         echo "<td>" . $row['day'] . "</td>";
                                         echo "<td>" . $row['time'] . " - " . $row['timeend'] . "</td>";
                                         echo "<td>" . $row['daylab'] . "</td>";
@@ -81,6 +144,7 @@
                                 }
                                 echo "</tbody>";                            
                             echo "</table>";
+                            echo '</div>';
                             // Free result set
                             mysqli_free_result($result);
                         } else{
@@ -97,5 +161,14 @@
             </div>        
         </div>
     </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+$('#dtVerticalScrollExample').DataTable({
+"scrollY": "200px",
+"scrollCollapse": true,
+});
+$('.dataTables_length').addClass('bs-select');
+});
+</script>
 </body>
 </html>

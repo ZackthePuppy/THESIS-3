@@ -1,5 +1,8 @@
 <?php
 if(!empty($_GET['file'])){
+    
+        header("Refresh:0");
+
     $fileName = basename($_GET['file']);
     $filePath = 'temp/'.$fileName;
     if(!empty($fileName) && file_exists($filePath)){
@@ -14,6 +17,7 @@ if(!empty($_GET['file'])){
         
         // Read the file
         readfile($filePath);
+
         exit;
     }else{
         echo 'The File '.$fileName.' does not exist.';

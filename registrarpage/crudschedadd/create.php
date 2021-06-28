@@ -3,7 +3,7 @@
 require_once "config.php";
  
 // Define variables and initialize with empty values
-$subjcode = $section = $subjtitle = $sem = $units = $slots = $day = $daylab = $time = $timeend = $timelab = $timelabend = "";
+$subjcode = $section = $subjtitle = $sem = $units = $slots = $day = $daylab = $time = $timeend = $timelab = $timelabend = $prereq_err = $prereq = $year = "";
 $subjcode_err = $section_err = $subjtitle_err = $sem_err = $units_err = "";
  
 // Processing form data when form is submitted
@@ -25,7 +25,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     
     $units = trim($_POST["units"]);
+    $prereq = trim($_POST["prereq"]);
     $sem = trim($_POST["sem"]);
+    $year = trim($_POST["year"]);
     $section = ($_POST['course'] . $_POST['year'] . $_POST['section']);  
     $slots = 50;
     $day = trim($_POST["day"]);
@@ -37,17 +39,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Check input errors before inserting in database
     if(empty($name_err) && empty($address_err) && empty($salary_err)){
         // Prepare an insert statement
-        $sql = "INSERT INTO subject (subjcode, subjtitle, units, sem, section, slots, day, time, timeend, daylab, timelab, timelabend) VALUES (?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ? ,?)";
+        $sql = "INSERT INTO subject (subjcode, subjtitle, units, prereq, sem, year, section, slots, day, time, timeend, daylab, timelab, timelabend) VALUES (?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?, ?, ? ,?)";
          
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssssssssssss", $param_subjcode, $param_subjtitle, $param_units, $param_sem, $param_section, $param_slots, $param_day, $param_time, $param_timeend, $param_daylab, $param_timelab, $param_timelabend);
+            mysqli_stmt_bind_param($stmt, "ssssssssssssss", $param_subjcode, $param_subjtitle, $param_units, $param_prereq, $param_sem, $param_year, $param_section, $param_slots, $param_day, $param_time, $param_timeend, $param_daylab, $param_timelab, $param_timelabend);
             
             // Set parameters
             $param_subjcode = $subjcode;
             $param_subjtitle = $subjtitle;
             $param_units = $units;
+            $param_prereq = $prereq;
             $param_sem = $sem;
+            $param_year = $year;
             $param_section = $section;
             $param_slots = $slots;
             $param_day = $day;
@@ -127,11 +131,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                <option value="D">D</option>
                <option value="E">E</option>
             </select>
-            <label>&emsp; Sem: &nbsp;</label>
-            <select id = "sem" name="sem" value="<?php echo $sem; ?>">
-               <option value="1">1st</option>
-               <option value="2">2nd</option>
-            </select>
         </div>
 
                         
@@ -143,13 +142,27 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
                         <div class="input-group">
-            <label>No. of Units: &nbsp;</label>
+            <label>&emsp; Sem: &nbsp;</label>
+            <select id = "sem" name="sem" value="<?php echo $sem; ?>">
+               <option value="1">1st</option>
+               <option value="2">2nd</option>
+            </select>
+
+
+
+            <label> &emsp;No. of Units: &nbsp;</label>
             <select id = "units" name="units" value="<?php echo $units; ?>">
                <option value="1">1</option>
                <option value="2">2</option>
                <option value="3">3</option>
             </select>
         </div>
+
+                        <div class="form-group">
+                            <label><br>Prerequisite</label>
+                            <input type="text" name="prereq" class="form-control <?php echo (!empty($prereq_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $prereq; ?>">
+                            <span class="invalid-feedback"><?php echo $prereq_err;?></span>
+                        </div>
 
                         <div class="input-group">
             <label>Day: &nbsp;</label>

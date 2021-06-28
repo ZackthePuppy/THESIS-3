@@ -1,9 +1,22 @@
 <?php include 'logincheck.php';?>
 <?php include 'uploadlogic.php';?>
 
-<?php include 'crudmis/server.php'; ?>
+<?php include 'crudmis/server.php'; 
+
+    if (isset($_GET['apr'])) {
+        $id = $_GET['apr'];
+        mysqli_query($db, "UPDATE regular set enrolled = 'Approved' where id = $id");
+         
+        // Redirect to login page
+        header("location: mishome.php");
+        exit;
+    }
 
 
+
+
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -95,7 +108,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         </tr>
 
     <?php } ?>
+     
 </table>
+<div class="container" style="">
+<button class="no-print" style="float: center;" onClick="window.print()">Print this page</button>
+<a class="no-print" href="mishome.php?apr=<?php echo $text; ?>" class="del_btn">Approve this reg form</a>
+</div>
 
 </table>                
 
@@ -105,9 +123,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             }
         }
 ?>
-<div class="container" style="">
-<button class="no-print" style="float: center;" onClick="window.print()">Print this page</button>
-</div>
         <script>
            let scanner = new Instascan.Scanner({ video: document.getElementById('preview')});
            Instascan.Camera.getCameras().then(function(cameras){

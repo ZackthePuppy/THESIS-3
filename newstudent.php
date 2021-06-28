@@ -8,7 +8,7 @@
 	<?php include 'header.HTML'; ?>
 	<?php include 'newstudentaction.php'; ?>
 
-    <div class="wrapper">
+    <div style="width: 50%;" class="wrapper">
         <h2>Request a schedule for entrance exam</h2>
         <form id="myFormId" action="" method="post" >
 
